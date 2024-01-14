@@ -1,6 +1,6 @@
 import { readFile } from "fs";
 
-let IDSum = 0;
+let powerSum = 0;
 
 function getIDSum(text: string) {
 	const lines = text.split(/\n|;|:/g);
@@ -15,29 +15,35 @@ function getIDSum(text: string) {
 	});
 
 	Object.entries(struct).forEach((v) => {
-		let skip = false;
+		let curr = [0, 0, 0];
 
 		(v[1] as string[][]).forEach((a) => {
 			for (let i = 0; i < a.length; i++) {
 				if (!isNaN(Number(a[i]))) {
 					const cubes = Number(a[i]);
 
-					if (
-						(a[i + 1] === "red" && cubes > 12) ||
-						(a[i + 1] === "green" && cubes > 13) ||
-						(a[i + 1] === "blue" && cubes > 14)
-					) {
-						skip = true;
-						continue;
+					switch (a[i + 1]) {
+						case "red": {
+							if (cubes > curr[0]) curr[0] = cubes;
+							continue;
+						}
+						case "green": {
+							if (cubes > curr[1]) curr[1] = cubes;
+							continue;
+						}
+						case "blue": {
+							if (cubes > curr[2]) curr[2] = cubes;
+							continue;
+						}
 					}
 				}
 			}
 		});
 
-		if (!skip) IDSum += Number(v[0]);
+		powerSum += curr.reduce((a, b) => a * b); // 74804
 	});
 
-	return IDSum; // 2317
+	return powerSum;
 }
 
 readFile("./02/input.txt", "utf-8", (err, data) => {
