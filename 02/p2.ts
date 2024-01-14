@@ -2,7 +2,7 @@ import { readFile } from "fs";
 
 let powerSum = 0;
 
-function getIDSum(text: string) {
+function getIDPowerSum(text: string) {
 	const lines = text.split(/\n|;|:/g);
 	const struct = {} as any;
 	let rID = 0;
@@ -49,5 +49,5 @@ function getIDSum(text: string) {
 readFile("./02/input.txt", "utf-8", (err, data) => {
 	if (err) console.error(err);
 
-	console.log(getIDSum(data));
+	console.log(getIDPowerSum(data));
 });
